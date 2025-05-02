@@ -1,28 +1,21 @@
-class Loading {
-    constructor(id='loading') {
-        this.element = document.getElementById(id);
-    }
-    show() {
-        this.element.classList.remove('d-none');
-    }
-    hide() {
-        this.element.classList.add('d-none');
-    }
-}
-
-const form = document.getElementById('file-form');
-const fileInput = document.getElementById('file');
-const actionsSelect = document.getElementById('action');
-const runActionButton = document.getElementById('run-action');
+import { ApplicationPDF } from './files/pdf.js';
+import { ImagePNG } from './files/png.js';
+import { Loading } from './components/loading.js';
+import { FileForm } from './components/form.js';
 
 const responseCard = document.getElementById('response-card');
 const responseTitle = document.getElementById('response-title');
 const responseContent = document.getElementById('response-content');
+const responseCanvas = document.getElementById('response-canvas');
 
 const loading = new Loading();
+const form = new FileForm();
 
-const getFileObject = (target) => {
-    return target.files[0];
+const downloadFile = (fileName, fileData) => {
+    const link = document.createElement('a');
+    link.href = fileData;
+    link.download = fileName;
+    link.click();
 }
 
 const newSelectOption = (value, text) => {
@@ -36,51 +29,77 @@ const pdfActions = [
     newSelectOption('extract', 'Extrair texto do arquivo'),
 ];
 
-fileInput.addEventListener('change', (event) => {
-    loading.show();
+const pngActions = [
+    newSelectOption('to-jpeg', 'Converter para JPEG'),
+    newSelectOption('to-webp', 'Converter para WEBP'),
+];
 
-    const file = getFileObject(event.target);
-    actionsSelect.innerHTML = '';
+form.fileInputElement.addEventListener('change', (event) => {
+    loading.show();
+    form.clearSelect();
+
+    const file = form.getFileObject();
+
+    if (!file) {
+        responseCard.classList.add('d-none');
+        responseContent.innerHTML = '';
+        responseTitle.innerText = '';
+        loading.hide();
+        return;
+    }
     
     if (file.type === 'application/pdf') {
-        actionsSelect.disabled = false;
-        runActionButton.disabled = false;
-        pdfActions.forEach(action => {
-            actionsSelect.add(action);
-        });
+        form.populateSelect(pdfActions);
     }
+    
+    else if (file.type === 'image/png') {
+        form.populateSelect(pngActions);
+    }
+
     else {
-        actionsSelect.innerHTML = '<option selected>---</option>';
+        responseCard.classList.remove('d-none');
+        responseContent.innerHTML = 'Formato de arquivo não suportado!';
+        responseTitle.innerText = '';
     }
 
     loading.hide();
 });
 
-form.addEventListener('submit', (event) => {
+form.element.addEventListener('submit', async (event) => {
     loading.show();
     event.preventDefault();
 
     responseContent.innerHTML = '';
     responseTitle.innerText = '';
     responseCard.classList.remove('d-none');
-    
-    const file = getFileObject(event.target[0]);
-    const reader = new FileReader();
-    
-    reader.onload = async (event) => {
-        const pdf = await pdfjsLib.getDocument(event.target.result).promise;
 
-        responseTitle.innerText = file.name;
-        
-        for (let pageIndex = 0; pageIndex < pdf.numPages; pageIndex++) {
-            const page = await pdf.getPage(pageIndex + 1);
-            const content = await page.getTextContent();
-            const text = content.items.map(item => item.str).join(' ');
-            responseContent.innerHTML += `<p>${text}</p>`;
+    const file = form.getFileObject();
+
+    if (file.type === 'application/pdf') {
+        const pdf = new ApplicationPDF(file);
+        responseTitle.innerText = pdf.getFileName();
+        pdf.readLines((line) => {
+            responseContent.innerHTML += `<p>${line}</p>`;
+        });
+    }
+    
+    else if (file.type === 'image/png') {
+        const action = form.getAction();
+        const png = new ImagePNG(file);
+
+        if (action === 'to-webp') {
+            png.toWEBP(responseCanvas, (imageData) => {
+                downloadFile('convertido.webp', imageData);
+            })
+        }
+
+        else if (action === 'to-jpeg') {
+            png.toJPEG(responseCanvas, (imageData) => {
+                downloadFile('convertido.jpeg', imageData);
+            })
         }
     }
 
-    reader.readAsArrayBuffer(file);
     loading.hide();
 });
 
