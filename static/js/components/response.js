@@ -1,32 +1,32 @@
 export class ResponseCard {
 
     constructor() {
-        this.responseCard = document.getElementById('response-card');
-        this.responseTitle = document.getElementById('response-title');
-        this.responseContent = document.getElementById('response-content');
-        this.responseCanvas = document.getElementById('response-canvas');
+        this.cardElement = document.getElementById('response-card');
+        this.titleElement = document.getElementById('response-title');
+        this.contentElement = document.getElementById('response-content');
+        this.canvasElement = document.getElementById('response-canvas');
     }
 
     clear() {
-        this.responseContent.innerHTML = '';
-        this.responseTitle.innerText = '';
+        this.contentElement.innerHTML = '';
+        this.titleElement.innerText = '';
     }
 
     hide() {
-        this.responseCard.classList.add('d-none');
+        this.cardElement.classList.add('d-none');
         this.clear();
     }
 
     show() {
         this.clear();
-        this.responseCard.classList.remove('d-none');
+        this.cardElement.classList.remove('d-none');
     }
 
     setTitle(title) {
-        this.responseTitle.innerText = title;
+        this.titleElement.innerText = title;
     }
 
     addResponseLine(line) {
-        this.responseContent.innerHTML += `<p>${line}</p>`;
+        this.contentElement.innerHTML += `<p>${line}</p>`;
     }
 }
