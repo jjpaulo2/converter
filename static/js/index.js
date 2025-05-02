@@ -2,14 +2,11 @@ import { ApplicationPDF } from './files/pdf.js';
 import { ImagePNG } from './files/png.js';
 import { Loading } from './components/loading.js';
 import { FileForm } from './components/form.js';
-
-const responseCard = document.getElementById('response-card');
-const responseTitle = document.getElementById('response-title');
-const responseContent = document.getElementById('response-content');
-const responseCanvas = document.getElementById('response-canvas');
+import { ResponseCard } from './components/response.js';
 
 const loading = new Loading();
 const form = new FileForm();
+const response = new ResponseCard();
 
 const downloadFile = (fileName, fileData) => {
     const link = document.createElement('a');
@@ -41,9 +38,7 @@ form.fileInputElement.addEventListener('change', (event) => {
     const file = form.getFileObject();
 
     if (!file) {
-        responseCard.classList.add('d-none');
-        responseContent.innerHTML = '';
-        responseTitle.innerText = '';
+        response.hide();
         loading.hide();
         return;
     }
@@ -57,9 +52,8 @@ form.fileInputElement.addEventListener('change', (event) => {
     }
 
     else {
-        responseCard.classList.remove('d-none');
-        responseContent.innerHTML = 'Formato de arquivo não suportado!';
-        responseTitle.innerText = '';
+        response.show();
+        response.addResponseLine('Formato de arquivo não suportado!');
     }
 
     loading.hide();
@@ -68,18 +62,15 @@ form.fileInputElement.addEventListener('change', (event) => {
 form.element.addEventListener('submit', async (event) => {
     loading.show();
     event.preventDefault();
-
-    responseContent.innerHTML = '';
-    responseTitle.innerText = '';
-    responseCard.classList.remove('d-none');
+    response.show();
 
     const file = form.getFileObject();
 
     if (file.type === 'application/pdf') {
         const pdf = new ApplicationPDF(file);
-        responseTitle.innerText = pdf.getFileName();
+        response.setTitle(pdf.getFileName());
         pdf.readLines((line) => {
-            responseContent.innerHTML += `<p>${line}</p>`;
+            response.addResponseLine(line);
         });
     }
     
