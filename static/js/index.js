@@ -1,3 +1,15 @@
+class Loading {
+    constructor(id='loading') {
+        this.element = document.getElementById(id);
+    }
+    show() {
+        this.element.classList.remove('d-none');
+    }
+    hide() {
+        this.element.classList.add('d-none');
+    }
+}
+
 const form = document.getElementById('file-form');
 const fileInput = document.getElementById('file');
 const actionsSelect = document.getElementById('action');
@@ -6,6 +18,8 @@ const runActionButton = document.getElementById('run-action');
 const responseCard = document.getElementById('response-card');
 const responseTitle = document.getElementById('response-title');
 const responseContent = document.getElementById('response-content');
+
+const loading = new Loading();
 
 const getFileObject = (target) => {
     return target.files[0];
@@ -23,6 +37,8 @@ const pdfActions = [
 ];
 
 fileInput.addEventListener('change', (event) => {
+    loading.show();
+
     const file = getFileObject(event.target);
     actionsSelect.innerHTML = '';
     
@@ -32,10 +48,16 @@ fileInput.addEventListener('change', (event) => {
         pdfActions.forEach(action => {
             actionsSelect.add(action);
         });
-    } 
+    }
+    else {
+        actionsSelect.innerHTML = '<option selected>---</option>';
+    }
+
+    loading.hide();
 });
 
 form.addEventListener('submit', (event) => {
+    loading.show();
     event.preventDefault();
 
     responseContent.innerHTML = '';
@@ -59,6 +81,7 @@ form.addEventListener('submit', (event) => {
     }
 
     reader.readAsArrayBuffer(file);
+    loading.hide();
 });
 
 window.onload = () => {
