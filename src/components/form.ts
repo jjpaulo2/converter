@@ -43,7 +43,6 @@ export class FileForm {
                 this.fileInputElement.files = files;
                 this.fileInputElement.dispatchEvent(new Event('change'));
             }
-            console.log(this.fileInputElement.files);
         });
     }
 
