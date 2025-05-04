@@ -1,34 +1,23 @@
-import { ApplicationPDF } from './files/pdf.js';
-import { ImagePNG } from './files/png.js';
-import { Loading } from './components/loading.js';
-import { FileForm } from './components/form.js';
-import { ResponseCard } from './components/response.js';
+import { ApplicationPDF } from './files/pdf';
+import { ImagePNG } from './files/png';
+import { Loading } from './components/loading';
+import { FileForm } from './components/form';
+import { ResponseCard } from './components/response';
+import { getNewSelectOption } from './utils/elements';
+import { downloadFile } from './utils/download';
+import { GlobalWorkerOptions } from 'pdfjs-dist';
 
 const loading = new Loading();
 const form = new FileForm();
 const response = new ResponseCard();
 
-const downloadFile = (fileName, fileData) => {
-    const link = document.createElement('a');
-    link.href = fileData;
-    link.download = fileName;
-    link.click();
-}
-
-const newSelectOption = (value, text) => {
-    const option = document.createElement('option');
-    option.value = value;
-    option.text = text;
-    return option;
-}
-
 const pdfActions = [
-    newSelectOption('extract', 'Extrair texto do arquivo'),
+    getNewSelectOption('extract', 'Extrair texto do arquivo'),
 ];
 
 const pngActions = [
-    newSelectOption('to-jpeg', 'Converter para JPEG'),
-    newSelectOption('to-webp', 'Converter para WEBP'),
+    getNewSelectOption('to-jpeg', 'Converter para JPEG'),
+    getNewSelectOption('to-webp', 'Converter para WEBP'),
 ];
 
 form.fileInputElement.addEventListener('change', (event) => {
@@ -69,7 +58,7 @@ form.element.addEventListener('submit', async (event) => {
     if (file.type === 'application/pdf') {
         const pdf = new ApplicationPDF(file);
         response.setTitle(pdf.getFileName());
-        pdf.readLines((line) => {
+        pdf.readLines((line: string) => {
             response.addResponseLine(line);
         });
     }
@@ -79,13 +68,13 @@ form.element.addEventListener('submit', async (event) => {
         const png = new ImagePNG(file);
 
         if (action === 'to-webp') {
-            png.toWEBP(responseCanvas, (imageData) => {
+            png.toWEBP(response.canvasElement, (imageData: string) => {
                 downloadFile('convertido.webp', imageData);
             })
         }
 
         else if (action === 'to-jpeg') {
-            png.toJPEG(responseCanvas, (imageData) => {
+            png.toJPEG(response.canvasElement, (imageData: string) => {
                 downloadFile('convertido.jpeg', imageData);
             })
         }
@@ -95,5 +84,5 @@ form.element.addEventListener('submit', async (event) => {
 });
 
 window.onload = () => {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@5.2.133/build/pdf.worker.min.mjs';
+    GlobalWorkerOptions.workerSrc = 'dist/pdf.worker.min.mjs';
 }
