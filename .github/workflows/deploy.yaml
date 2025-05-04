@@ -38,16 +38,10 @@ jobs:
       - name: Build the javascript
         run: npm run build
 
-      - name: Prepare files for deployment
-        run: |
-          mkdir -p site
-          cp -R dist site/
-          cp index.html site/
-
       - name: Upload site artifactory
         uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          path: public
       
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
