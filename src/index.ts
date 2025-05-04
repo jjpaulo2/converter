@@ -6,10 +6,14 @@ import { ResponseCard } from './components/response';
 import { getNewSelectOption } from './utils/elements';
 import { downloadFile } from './utils/download';
 import { GlobalWorkerOptions } from 'pdfjs-dist';
+import { Alert } from './components/alert';
+import { Render } from './components/render';
 
 const loading = new Loading();
 const form = new FileForm();
 const response = new ResponseCard();
+const render = new Render();
+const alert = new Alert(render);
 
 const pdfActions = [
     getNewSelectOption('extract', 'Extrair texto do arquivo'),
@@ -21,11 +25,11 @@ const pngActions = [
 ];
 
 form.onFileChange((file: File) => {
+    response.hide();
     loading.show();
     form.clearSelect();
 
     if (!file) {
-        response.hide();
         loading.hide();
         return;
     }
@@ -39,8 +43,9 @@ form.onFileChange((file: File) => {
     }
 
     else {
-        response.show();
-        response.addResponseLine('Formato de arquivo não suportado!');
+        form.hideActions();
+        const fileExtension = file.type.split('/')[1];
+        alert.error(`Formato de arquivo (.${fileExtension}) não suportado!`);
     }
 
     loading.hide();

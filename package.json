@@ -17,7 +17,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "serve": "webpack serve"
+    "serve": "webpack && webpack serve"
   },
   "dependencies": {
     "bootstrap": "^5.3.5",
