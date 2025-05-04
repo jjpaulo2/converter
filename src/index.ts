@@ -20,11 +20,9 @@ const pngActions = [
     getNewSelectOption('to-webp', 'Converter para WEBP'),
 ];
 
-form.fileInputElement.addEventListener('change', (event) => {
+form.onFileChange((file: File) => {
     loading.show();
     form.clearSelect();
-
-    const file = form.getFileObject();
 
     if (!file) {
         response.hide();
@@ -48,12 +46,9 @@ form.fileInputElement.addEventListener('change', (event) => {
     loading.hide();
 });
 
-form.element.addEventListener('submit', async (event) => {
+form.onSubmit((file: File, action: string) => {
     loading.show();
-    event.preventDefault();
     response.show();
-
-    const file = form.getFileObject();
 
     if (file.type === 'application/pdf') {
         const pdf = new ApplicationPDF(file);
@@ -64,7 +59,6 @@ form.element.addEventListener('submit', async (event) => {
     }
     
     else if (file.type === 'image/png') {
-        const action = form.getAction();
         const png = new ImagePNG(file);
 
         if (action === 'to-webp') {

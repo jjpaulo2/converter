@@ -46,4 +46,17 @@ export class FileForm {
         return this.actionSelectElement.value;
     }
 
+    onSubmit(callback: (file: File, action: string) => void): void {
+        this.element.addEventListener('submit', (event: Event) => {
+            event.preventDefault();
+            callback(this.getFileObject(), this.getAction());
+        });
+    }
+
+    onFileChange(callback: (file: File) => void): void {
+        this.fileInputElement.addEventListener('change', () => {
+            callback(this.getFileObject());
+        });
+    }
+
 }
