@@ -27,16 +27,10 @@
         <p>Manipule vários tipos de arquivos de forma gratuita e 100% segura direto no seu navegador.</p>
 
         <form id="file-form">
+            
+            <input class="form-control d-none" type="file" id="file">
 
-            <div class="border border-dashed rounded-3 p-5 mb-3 text-center text-secondary" id="file-drag">
-                <i class="bi bi-file-earmark-arrow-up-fill fs-1"></i>
-                <p class="">Envie um arquivo</span>
-            </div>
-
-            <div class="mb-3 d-none">
-                <label for="file" class="form-label">Envie aqui um arquivo</label>
-                <input class="form-control" type="file" id="file">
-            </div>
+            <div class="border border-dashed rounded-3 p-5 mb-3 text-center text-secondary" id="file-drag"></div>
 
             <div id="render"></div>
             
@@ -79,6 +73,11 @@
                 </p>
             </div>
         </div>
+
+        <footer>
+            Em desenvolvimento por
+            <a target="_blank" href="https://github.com/jjpaulo2">@jjpaulo2</a>.
+        </footer>
 
     </div>
 

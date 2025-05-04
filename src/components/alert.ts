@@ -1,4 +1,5 @@
-import type { Render } from "./render";
+import { getNewElementHTML } from "../utils/elements";
+import { Render } from "./render";
 
 export class Alert {
 
@@ -13,7 +14,7 @@ export class Alert {
     }
 
     private getElement(type: string, message: string): string {
-        return this.render.getElement(
+        return getNewElementHTML(
             'div',
             message + this.getCloseButton(),
             {

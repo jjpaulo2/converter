@@ -12,3 +12,11 @@ export const getNewSelectOption = (value: string, text: string) => {
     option.text = text;
     return option;
 }
+
+export const getNewElementHTML = (tag: string, innerHTML: string, properties: Record<string, string>): string => {
+    let tag_properties = '';
+    for (const [key, value] of Object.entries(properties)) {
+        tag_properties += ` ${key}="${value}"`;
+    }
+    return `<${tag}${tag_properties}>${innerHTML}</${tag}>`;
+}

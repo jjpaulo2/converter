@@ -74,14 +74,16 @@ export class FileForm {
     }
 
     hideActions(): void {
-        if (!('d-none' in this.actionsRowElement.classList)) {
-            this.actionsRowElement.classList.add('d-none');
-        }
+        this.actionsRowElement.classList.add('d-none');
+    }
+
+    showActions(): void {
+        this.actionsRowElement.classList.remove('d-none');
     }
 
     setActionsVisibility(): void {
         if (this.fileInputElement.files) {
-            this.actionsRowElement.classList.remove('d-none');
+            this.showActions();
         }
         else {
             this.hideActions();

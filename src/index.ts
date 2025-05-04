@@ -8,8 +8,10 @@ import { downloadFile } from './utils/download';
 import { GlobalWorkerOptions } from 'pdfjs-dist';
 import { Alert } from './components/alert';
 import { Render } from './components/render';
+import { FileDrag } from './components/fileDrag';
 
 const loading = new Loading();
+const fileDrag = new FileDrag();
 const form = new FileForm();
 const response = new ResponseCard();
 const render = new Render();
@@ -25,10 +27,12 @@ const pngActions = [
 ];
 
 form.onFileChange((file: File) => {
-    response.hide();
     loading.show();
+    response.hide()
+    fileDrag.render(file);
     form.clearSelect();
-
+    form.hideActions();
+    
     if (!file) {
         loading.hide();
         return;
@@ -36,14 +40,15 @@ form.onFileChange((file: File) => {
     
     if (file.type === 'application/pdf') {
         form.populateSelect(pdfActions);
+        form.showActions();
     }
     
     else if (file.type === 'image/png') {
         form.populateSelect(pngActions);
+        form.showActions();
     }
 
     else {
-        form.hideActions();
         const fileExtension = file.type.split('/')[1];
         alert.error(`Formato de arquivo (.${fileExtension}) não suportado!`);
     }
@@ -83,5 +88,6 @@ form.onSubmit((file: File, action: string) => {
 });
 
 window.onload = () => {
+    fileDrag.render(null);
     GlobalWorkerOptions.workerSrc = 'static/js/pdf.worker.min.mjs';
 }
