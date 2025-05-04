@@ -84,5 +84,5 @@ form.element.addEventListener('submit', async (event) => {
 });
 
 window.onload = () => {
-    GlobalWorkerOptions.workerSrc = 'dist/pdf.worker.min.mjs';
+    GlobalWorkerOptions.workerSrc = 'static/js/pdf.worker.min.mjs';
 }

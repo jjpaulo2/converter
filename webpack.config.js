@@ -5,8 +5,8 @@ module.exports = {
   mode: 'production',
   entry: './src/index.ts',
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    filename: 'js/bundle.min.js',
+    path: path.resolve(__dirname, 'public/static'),
   },
   resolve: {
     extensions: ['.ts', '.js'],
@@ -25,14 +25,22 @@ module.exports = {
       patterns: [
         {
             from: "**/pdfjs-dist/build/pdf.worker.min.mjs",
-            to: "pdf.worker.min.mjs"
+            to: "js/pdf.worker.min.mjs"
+        },
+        {
+          from: "**/bootstrap/dist/js/bootstrap.bundle.min.js",
+          to: "js/bootstrap.bundle.min.js"
+        },
+        {
+          from: "**/bootstrap/dist/css/bootstrap.min.css",
+          to: "css/bootstrap.min.css"
         },
       ],
     }),
   ],
   devServer: {
     static: {
-      directory: path.join(__dirname),
+      directory: path.join(__dirname, 'public'),
     },
     compress: true,
     port: 5500,

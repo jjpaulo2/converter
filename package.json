@@ -21,9 +21,11 @@
   },
   "dependencies": {
     "bootstrap": "^5.3.5",
+    "bootstrap-icons": "^1.12.1",
     "pdfjs-dist": "^5.2.133"
   },
   "devDependencies": {
+    "@types/bootstrap": "^5.2.10",
     "copy-webpack-plugin": "^13.0.0",
     "ts-loader": "^9.5.2",
     "typescript": "^5.8.3",
