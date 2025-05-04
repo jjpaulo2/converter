@@ -35,6 +35,14 @@ module.exports = {
           from: "**/bootstrap/dist/css/bootstrap.min.css",
           to: "css/bootstrap.min.css"
         },
+        {
+          from: "**/bootstrap-icons/font/bootstrap-icons.min.css",
+          to: "css/bootstrap-icons.min.css"
+        },
+        {
+          from: "**/bootstrap-icons/font/fonts/bootstrap-icons.woff",
+          to: "css/fonts/bootstrap-icons.woff"
+        },
       ],
     }),
   ],
