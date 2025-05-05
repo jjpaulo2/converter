@@ -3,44 +3,30 @@ import { getElement } from "../utils/elements";
 
 export class ResponseCard {
 
-    public cardElement: HTMLElement;
-    public titleElement: HTMLElement;
-    public contentElement: HTMLElement;
-    public canvasElement: HTMLCanvasElement;
+    private title: string;
 
-    constructor(
-        cardId: string = 'response-card',
-        titleId: string = 'response-title',
-        contentId: string = 'response-content',
-        canvasId: string = 'response-canvas'
-    ) {
-        this.cardElement = getElement(cardId);
-        this.titleElement = getElement(titleId);
-        this.contentElement = getElement(contentId);
-        this.canvasElement = getElement(canvasId) as HTMLCanvasElement;
+    constructor(title: string) {
+        this.title = title;
+        
     }
 
-    clear(): void {
-        this.contentElement.innerHTML = '';
-        this.titleElement.innerText = '';
+    render(): string {
+        return `
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-body-secondary">${this.title}</h6>
+                    <p class="card-text" id="response-card-text"></p>
+                </div>
+            </div>
+        `;
     }
 
-    hide(): void {
-        this.cardElement.classList.add('d-none');
-        this.clear();
-    }
+    addContentParagraph(text: string): void {
+        const body = getElement('response-card-text');
 
-    show(): void {
-        this.clear();
-        this.cardElement.classList.remove('d-none');
-    }
-
-    setTitle(title: string): void {
-        this.titleElement.innerText = title;
-    }
-
-    addResponseLine(line: string): void {
-        this.contentElement.innerHTML += `<p>${line}</p>`;
+        if (body) {
+            body.innerHTML += `<p>${text}</p>`;
+        }
     }
 
 }

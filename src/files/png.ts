@@ -11,7 +11,7 @@ export class ImagePNG {
         this.reader = reader;
     }
 
-    toJPEG(canvas: HTMLCanvasElement, callback: CallableFunction): void {
+    toJPEG(canvas: HTMLCanvasElement, callback: (dataUrl: string) => void): void {
         const image = new Image();
 
         this.reader.readAsDataURL(this.file);
@@ -42,7 +42,7 @@ export class ImagePNG {
         }
     }
 
-    toWEBP(canvas: HTMLCanvasElement, callback: CallableFunction): void {
+    toWEBP(canvas: HTMLCanvasElement, callback: (dataUrl: string) => void): void {
         const image = new Image();
 
         this.reader.readAsDataURL(this.file);

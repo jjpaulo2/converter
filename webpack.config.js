@@ -43,6 +43,10 @@ module.exports = {
           from: "**/bootstrap-icons/font/fonts/bootstrap-icons.woff",
           to: "css/fonts/bootstrap-icons.woff"
         },
+        {
+          from: "**/bootstrap-icons/font/fonts/bootstrap-icons.woff",
+          to: "css/fonts/bootstrap-icons.woff2"
+        },
       ],
     }),
   ],

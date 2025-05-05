@@ -1,6 +1,7 @@
 import { getNewElementHTML } from "../utils/elements";
 import { Render } from "./render";
 
+
 export class Alert {
 
     private render: Render;

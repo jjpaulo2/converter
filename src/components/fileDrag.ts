@@ -1,6 +1,7 @@
 import { getNewElementHTML } from "../utils/elements";
 import { getFileExtension } from "../utils/files";
 
+
 export class FileDrag {
 
     private element: HTMLElement;

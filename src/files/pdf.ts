@@ -18,7 +18,9 @@ export class ApplicationPDF {
         return this.file.name;
     }
     
-    readLines(callback: CallableFunction): void {
+    readLines(callback: (text: string) => void): void {
+        console.log('[PDF.js] Reading file text content...');
+
         this.reader.readAsArrayBuffer(this.file);
         this.reader.onload = async (event) => {
 
@@ -40,6 +42,8 @@ export class ApplicationPDF {
                 const text = textLines.join(' ');
                 callback(text);
             }
+
+            console.log('[PDF.js] File text content read successfully!');
         }
     }
 }
