@@ -20,6 +20,8 @@
     "serve": "webpack && webpack serve"
   },
   "dependencies": {
+    "@ffmpeg/ffmpeg": "^0.12.15",
+    "@ffmpeg/util": "^0.12.2",
     "bootstrap": "^5.3.5",
     "bootstrap-icons": "^1.12.1",
     "pdfjs-dist": "^5.2.133"

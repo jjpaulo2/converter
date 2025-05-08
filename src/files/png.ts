@@ -1,15 +1,7 @@
-export class ImagePNG {
+import { BaseFile } from "./_base";
 
-    private file: File;
-    private reader: FileReader;
 
-    constructor(
-        file: File,
-        reader: FileReader = new FileReader()
-    ) {
-        this.file = file;
-        this.reader = reader;
-    }
+export class ImagePNG extends BaseFile {
 
     toJPEG(canvas: HTMLCanvasElement, callback: (dataUrl: string) => void): void {
         const image = new Image();

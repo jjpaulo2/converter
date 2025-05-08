@@ -1,23 +1,12 @@
-import { getDocument } from 'pdfjs-dist';
+import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
+import { BaseFile } from './_base';
 
 
-export class ApplicationPDF {
+GlobalWorkerOptions.workerSrc = 'static/js/pdf.worker.min.mjs';
 
-    private file: File;
-    private reader: FileReader;
 
-    constructor(
-        file: File,
-        reader: FileReader = new FileReader()
-    ) {
-        this.file = file;
-        this.reader = reader;
-    }
+export class ApplicationPDF extends BaseFile {
 
-    getFileName(): string {
-        return this.file.name;
-    }
-    
     readLines(callback: (text: string) => void): void {
         console.log('[PDF.js] Reading file text content...');
 
